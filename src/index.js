@@ -9,6 +9,8 @@ import TasksManagementPage from './pages/TasksManagementPage';
 import TaskDetailsPage from './pages/TaskDetailsPage';
 import GroupsManagementPage from './pages/GroupsManagementPage';
 import TaskGroupPage from './pages/TaskGroupPage';
+import FlowsManagementPage from './pages/FlowsManagementPage';
+import TaskFlowPage from './pages/TaskFlowPage';
 import TaskStatusPicker from './pickers/TaskStatusPicker';
 import TaskPreviewCell from './components/TaskPreviewCell';
 import TaskGroupPicker from './pickers/TaskGroupPicker';
@@ -27,6 +29,9 @@ const ROUTE_TASKS_ALL_MANAGEMENT = 'allTasks';
 const ROUTE_GROUPS_MANAGEMENT = 'tasks/groups';
 const ROUTE_GROUP_MANAGEMENT = 'tasks/groups/group';
 
+const ROUTE_FLOWS_MANAGEMENT = 'tasks/flows';
+const ROUTE_FLOW_MANAGEMENT = 'tasks/flows/flow';
+
 const DEFAULT_CONFIG = {
   translations: [{ key: 'en', messages: messages_en }],
   reducers: [{ key: 'tasksManagement', reducer }],
@@ -38,10 +43,13 @@ const DEFAULT_CONFIG = {
     { path: `${ROUTE_TASK_MANAGEMENT}/:task_uuid?`, component: TaskDetailsPage },
     { path: ROUTE_GROUPS_MANAGEMENT, component: GroupsManagementPage },
     { path: `${ROUTE_GROUP_MANAGEMENT}/:task_group_uuid?`, component: TaskGroupPage },
+    { path: ROUTE_FLOWS_MANAGEMENT, component: FlowsManagementPage },
+    { path: `${ROUTE_FLOW_MANAGEMENT}/:task_flow_uuid?`, component: TaskFlowPage },
   ],
   refs: [
     { key: TASK_ROUTE, ref: ROUTE_TASK_MANAGEMENT },
     { key: 'tasksManagement.route.group', ref: ROUTE_GROUP_MANAGEMENT },
+    { key: 'tasksManagement.route.flow', ref: ROUTE_FLOW_MANAGEMENT },
     { key: 'tasksManagement.taskStatusPicker', ref: TaskStatusPicker },
     { key: 'tasksManagement.taskTypesPicker', ref: TaskTypesPicker },
     { key: 'tasksManagement.taskSourcesPicker', ref: TaskSourcesPicker },
