@@ -99,15 +99,19 @@ class TaskHeadPanel extends FormPanel {
               onChange={(taskGroup) => this.updateAttribute('taskGroup', taskGroup)}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
-            <TextAreaInput
-              module="tasksManagement"
-              label="task.businessStatus"
-              readOnly={readOnly}
-              value={task?.businessStatus}
-              onChange={(businessStatus) => this.updateAttribute('businessStatus', businessStatus)}
-            />
-          </Grid>
+          {/* Flow tasks: businessStatus is a deprecated adapter that only
+              shows the last writer - the decisions panel replaces it */}
+          {!task?.flow && (
+            <Grid item xs={3} className={classes.item}>
+              <TextAreaInput
+                module="tasksManagement"
+                label="task.businessStatus"
+                readOnly={readOnly}
+                value={task?.businessStatus}
+                onChange={(businessStatus) => this.updateAttribute('businessStatus', businessStatus)}
+              />
+            </Grid>
+          )}
           <Grid item xs={3} className={classes.item}>
             <TaskStatusPicker
               label="task.status"
