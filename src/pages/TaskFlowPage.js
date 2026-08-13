@@ -162,7 +162,10 @@ function TaskFlowPage({
   });
 
   useEffect(() => {
-    setEditedTaskFlow(taskFlow);
+    // A refetch that yields nothing (e.g. the head lookup right after a
+    // mutation) must not blank the edited record out to undefined - the
+    // head panel's pickers read arrays off it.
+    setEditedTaskFlow(taskFlow ?? {});
   }, [taskFlow]);
 
   useEffect(() => () => dispatch(clearTaskFlow()), []);
