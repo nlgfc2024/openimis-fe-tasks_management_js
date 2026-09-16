@@ -41,10 +41,9 @@ function TaskGroupPage({
     }
   }, [taskGroupUuid]);
 
-  const mandatoryFieldsEmpty = () => {
-    const code = editedTaskGroup?.code?.trim();
-    return !code || !editedTaskGroup?.completionPolicy || !editedTaskGroup?.taskexecutorSet?.length;
-  };
+  const mandatoryFieldsEmpty = () => (
+    !editedTaskGroup?.completionPolicy || !editedTaskGroup?.taskexecutorSet?.length
+  );
 
   const doesTaskGroupChange = () => !_.isEqual(taskGroup, editedTaskGroup);
 
