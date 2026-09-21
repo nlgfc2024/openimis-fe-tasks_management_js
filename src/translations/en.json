@@ -42,6 +42,8 @@
   "tasksManagement.taskGroup.delete.mutationLabel": "Delete task group {id}",
   "tasksManagement.taskGroup.update.mutationLabel": "Update task group {id}",
   "tasksManagement.taskGroup.create.mutationLabel": "Create task group {id}",
+  "tasksManagement.taskGroup.create.success.title": "Task group created",
+  "tasksManagement.taskGroup.create.success.message": "Task group and task executors created successfully.",
   "tasksManagement.TaskExecutorsPicker.label": "Task Executors",
   "tasksManagement.TaskExecutorsPicker.placeholder": "Search for Task Executor...",
   "tasksManagement.taskGroup.placeholder": "Not assigned",

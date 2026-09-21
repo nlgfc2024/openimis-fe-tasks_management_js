@@ -16,7 +16,11 @@ import TaskPreviewCell from './components/TaskPreviewCell';
 import TaskGroupPicker from './pickers/TaskGroupPicker';
 import TaskSearcher from './components/TaskSearcher';
 import getAdminMainMenuContributions from './contributions/AdminMainMenuContributions';
-import { TASK_ROUTE, RIGHT_TASKS_MANAGEMENT_SEARCH_ALL } from './constants';
+import {
+  TASK_ROUTE,
+  RIGHT_TASKS_MANAGEMENT_SEARCH_ALL,
+  TASKS_MANAGEMENT_ROUTE_GROUPS,
+} from './constants';
 import { fetchTask, resolveTask } from './actions';
 import TasksAllPage from './pages/TasksAllPage';
 import TaskTypesPicker from './pickers/TaskTypesPicker';
@@ -26,7 +30,7 @@ const ROUTE_TASKS_MANAGEMENT = 'tasks';
 const ROUTE_TASK_MANAGEMENT = 'tasks/task';
 const ROUTE_TASKS_ALL_MANAGEMENT = 'allTasks';
 
-const ROUTE_GROUPS_MANAGEMENT = 'tasks/groups';
+const ROUTE_GROUPS_MANAGEMENT = TASKS_MANAGEMENT_ROUTE_GROUPS;
 const ROUTE_GROUP_MANAGEMENT = 'tasks/groups/group';
 
 const DEFAULT_CONFIG = {
