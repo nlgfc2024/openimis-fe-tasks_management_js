@@ -48,6 +48,7 @@ export const RIGHT_TASKS_MANAGEMENT_SEARCH = 191001;
 export const RIGHT_TASKS_MANAGEMENT_SEARCH_ALL = 191005;
 
 export const TASKS_MANAGEMENT_ROUTE_GROUPS_GROUP = 'tasksManagement.route.group';
+export const TASKS_MANAGEMENT_ROUTE_GROUPS = 'tasks/groups';
 
 export const TASK_GROUP_SEARCH = 190001;
 export const TASK_GROUP_CREATE = 190002;

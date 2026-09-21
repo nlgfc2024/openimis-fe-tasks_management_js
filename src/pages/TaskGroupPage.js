@@ -3,12 +3,12 @@ import { makeStyles } from '@material-ui/styles';
 import { connect, useDispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  Form, Helmet, useTranslations, useModulesManager, useHistory, clearConfirm, journalize, coreConfirm,
+  Form, Helmet, useTranslations, useModulesManager, useHistory, clearConfirm, journalize, coreAlert, coreConfirm,
 } from '@openimis/fe-core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import _ from 'lodash';
 import TaskGroupHeadPanel from '../components/groups-management/TaskGroupHeadPanel';
-import { EMPTY_STRING } from '../constants';
+import { EMPTY_STRING, TASKS_MANAGEMENT_ROUTE_GROUPS } from '../constants';
 import {
   fetchTaskGroup, clearTaskGroup, deleteTaskGroup, updateTaskGroup, createTaskGroup,
 } from '../actions';
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function TaskGroupPage({
-  rights, taskGroup, taskGroupUuid, confirmed, journalize, mutation, submittingMutation, coreConfirm,
+  rights, taskGroup, taskGroupUuid, confirmed, journalize, mutation, submittingMutation, coreAlert, coreConfirm,
 }) {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -30,6 +30,7 @@ function TaskGroupPage({
   const [confirmedAction, setConfirmedAction] = useState(() => null);
   const prevSubmittingMutationRef = useRef();
   const back = () => history.goBack();
+  const goToTaskGroups = () => history.push(`/${TASKS_MANAGEMENT_ROUTE_GROUPS}`);
 
   const titleParams = (taskGroup) => ({
     code: taskGroup?.code ?? EMPTY_STRING,
@@ -41,10 +42,9 @@ function TaskGroupPage({
     }
   }, [taskGroupUuid]);
 
-  const mandatoryFieldsEmpty = () => {
-    const code = editedTaskGroup?.code?.trim();
-    return !code || !editedTaskGroup?.completionPolicy || !editedTaskGroup?.taskexecutorSet?.length;
-  };
+  const mandatoryFieldsEmpty = () => (
+    !editedTaskGroup?.completionPolicy || !editedTaskGroup?.taskexecutorSet?.length
+  );
 
   const doesTaskGroupChange = () => !_.isEqual(taskGroup, editedTaskGroup);
 
@@ -101,7 +101,13 @@ function TaskGroupPage({
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
       journalize(mutation);
-      if (mutation?.actionType === ACTION_TYPE.DELETE_TASK_GROUP) {
+      if (mutation?.actionType === ACTION_TYPE.CREATE_TASK_GROUP && mutation?.id) {
+        coreAlert(
+          formatMessage('taskGroup.create.success.title'),
+          formatMessage('taskGroup.create.success.message'),
+        );
+        goToTaskGroups();
+      } else if (mutation?.actionType === ACTION_TYPE.DELETE_TASK_GROUP) {
         back();
       }
     }
@@ -158,6 +164,7 @@ const mapDispatchToProps = (dispatch) => bindActionCreators({
   coreConfirm,
   clearConfirm,
   journalize,
+  coreAlert,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskGroupPage);
