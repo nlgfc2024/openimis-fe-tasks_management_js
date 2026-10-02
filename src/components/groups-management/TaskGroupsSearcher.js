@@ -188,8 +188,7 @@ function TaskGroupsSearcher({
       onDoubleClick={onDoubleClick}
       rowDisabled={isRowDisabled}
       rowLocked={isRowDisabled}
-      enableActionButtons
-      searcherActionsPosition="header-right"
+      enableHeaderActionButtons
       searcherActions={searcherActions()}
     />
   );
