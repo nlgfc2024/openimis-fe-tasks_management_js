@@ -5,7 +5,7 @@ import {
   makeStyles, Paper, Fab,
 } from '@material-ui/core';
 import {
-  useTranslations,
+  useTranslations, useHistory,
   useModulesManager, coreConfirm, clearConfirm, journalize,
 } from '@openimis/fe-core';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -16,6 +16,7 @@ import {
   TASK_CONTRIBUTION_KEY,
 } from '../constants';
 import { resolveTask } from '../actions';
+import { ACTION_TYPE } from '../reducer';
 
 const useStyles = makeStyles((theme) => ({
   paper: theme.paper.paper,
@@ -43,9 +44,11 @@ function TaskApprovementPanel({
   additionalData,
 }) {
   const modulesManager = useModulesManager();
+  const history = useHistory();
   const classes = useStyles();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const prevSubmittingMutationRef = useRef();
+  const resolvingTaskRef = useRef(false);
   const [approveOrFail, setApproveOrFail] = useState(EMPTY_STRING);
   const [disable, setDisable] = useState(false);
   const task = { ...edited };
@@ -64,8 +67,15 @@ function TaskApprovementPanel({
   useEffect(() => {
     if (prevSubmittingMutationRef.current && !submittingMutation) {
       journalize(mutation);
+
+      if (resolvingTaskRef.current
+        && mutation?.actionType === ACTION_TYPE.RESOLVE_TASK
+        && mutation?.id) {
+        resolvingTaskRef.current = false;
+        history.push('/tasks');
+      }
     }
-  }, [submittingMutation]);
+  }, [history, journalize, mutation, submittingMutation]);
 
   useEffect(() => {
     prevSubmittingMutationRef.current = submittingMutation;
@@ -75,6 +85,7 @@ function TaskApprovementPanel({
     if (task?.id && user?.id) {
       if (confirmed) {
         setDisable(true);
+        resolvingTaskRef.current = true;
         resolveTask(
           task,
           formatMessage('task.resolve.mutationLabel'),

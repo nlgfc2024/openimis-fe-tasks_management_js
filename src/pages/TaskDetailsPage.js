@@ -14,7 +14,7 @@ import TaskHeadPanel from '../components/TaskHeadPanel';
 import TaskPreviewPanel from '../components/TaskPreviewPanel';
 import TaskApprovementPanel from '../components/TaskApprovementPanel';
 import { clearTask, fetchTask, updateTask } from '../actions';
-import { TASK_STATUS as taskStatus } from '../constants';
+import { TASK_STATUS as taskStatus, TASK_UPDATE } from '../constants';
 
 const useStyles = makeStyles((theme) => ({
   page: theme.page,
@@ -72,6 +72,8 @@ function TaskDetailsPage({
   const isMandatoryFieldsEmpty = () => !editedTask?.taskGroup;
 
   const canSave = () => !isMandatoryFieldsEmpty() && doesTaskChange();
+  const isTaskAssignmentReadOnly = !rights.includes(TASK_UPDATE)
+    || [taskStatus.COMPLETED, taskStatus.FAILED].includes(task?.status);
 
   const handleSave = () => {
     if (task?.id) {
@@ -111,7 +113,7 @@ function TaskDetailsPage({
         mandatoryFieldsEmpty={isMandatoryFieldsEmpty}
         canSave={canSave}
         save={handleSave}
-        readOnly
+        readOnly={isTaskAssignmentReadOnly}
         HeadPanel={TaskHeadPanel}
         formatMessage={formatMessage}
         Panels={panels()}

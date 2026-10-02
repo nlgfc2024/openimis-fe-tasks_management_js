@@ -19,6 +19,7 @@
   "tasksManagement.TaskPreviewTable.rowsPerPage": "Rows per page",
   "tasksManagement.TaskPreviewTable.ofPages": "{from} - {to} of {count}",
   "tasksManagement.createButton.tooltip": "Create",
+  "tasksManagement.taskGroup.createButton.label": "Create Task Group",
   "tasksManagement.deleteButton.tooltip": "Delete",
   "tasksManagement.saveButton.tooltip": "Save changes",
   "tasksManagement.saveButton.tooltip.enabled": "Save changes",
