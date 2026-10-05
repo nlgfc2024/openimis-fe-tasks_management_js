@@ -11,10 +11,12 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { IconButton, Tooltip } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {
   DEFAULT_PAGE_SIZE,
+  TASK_GROUP_CREATE,
   TASK_GROUP_UPDATE,
   TASK_GROUP_DELETE,
   ROWS_PER_PAGE_OPTIONS,
@@ -43,6 +45,17 @@ function TaskGroupsSearcher({
   const history = useHistory();
   const modulesManager = useModulesManager();
   const { formatMessage, formatMessageWithValues } = useTranslations('tasksManagement', modulesManager);
+  const onTaskGroupAdd = () => history.push(
+    `/${modulesManager.getRef(TASKS_MANAGEMENT_ROUTE_GROUPS_GROUP)}`,
+  );
+
+  const searcherActions = () => [{
+    label: formatMessage('taskGroup.createButton.label'),
+    icon: <AddIcon />,
+    authorized: rights.includes(TASK_GROUP_CREATE),
+    onClick: onTaskGroupAdd,
+    variant: 'contained',
+  }];
 
   const [taskGroupToDelete, setTaskGroupToDelete] = useState(null);
   const [deletedTaskGroupsUuids, setDeletedTaskGroupsUuids] = useState([]);
@@ -175,6 +188,8 @@ function TaskGroupsSearcher({
       onDoubleClick={onDoubleClick}
       rowDisabled={isRowDisabled}
       rowLocked={isRowDisabled}
+      enableHeaderActionButtons
+      searcherActions={searcherActions()}
     />
   );
 }
