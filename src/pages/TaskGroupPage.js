@@ -82,6 +82,8 @@ function TaskGroupPage({
         id: taskGroup?.id,
       }),
       formatMessage('taskGroup.delete.confirm.message'),
+      null,
+      'warning',
     );
   };
 
