@@ -66,6 +66,8 @@ function TaskGroupsSearcher({
       code: taskGroupToDelete.code,
     }),
     formatMessage('taskGroup.delete.confirm.message'),
+    null,
+    'warning',
   );
 
   useEffect(() => taskGroupToDelete && openDeleteTaskGroupConfirmDialog(), [taskGroupToDelete]);
