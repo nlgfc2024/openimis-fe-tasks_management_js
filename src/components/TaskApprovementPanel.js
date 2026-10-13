@@ -13,7 +13,7 @@ import CheckIcon from '@material-ui/icons/Check';
 import {
   APPROVED, EMPTY_STRING,
   FAILED, TASK_STATUS,
-  TASK_CONTRIBUTION_KEY,
+  TASK_CONTRIBUTION_KEY, RIGHT_TASKS_MANAGEMENT_SEARCH_ALL,
 } from '../constants';
 import { resolveTask } from '../actions';
 import { ACTION_TYPE } from '../reducer';
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 function TaskApprovementPanel({
   edited,
+  rights,
   user,
   resolveTask,
   submittingMutation,
@@ -72,10 +73,10 @@ function TaskApprovementPanel({
         && mutation?.actionType === ACTION_TYPE.RESOLVE_TASK
         && mutation?.id) {
         resolvingTaskRef.current = false;
-        history.push('/tasks');
+        history.replace(rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL) ? '/AllTasks' : '/tasks');
       }
     }
-  }, [history, journalize, mutation, submittingMutation]);
+  }, [history, journalize, mutation, rights, submittingMutation]);
 
   useEffect(() => {
     prevSubmittingMutationRef.current = submittingMutation;
