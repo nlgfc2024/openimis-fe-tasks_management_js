@@ -69,10 +69,9 @@ function TaskApprovementPanel({
       journalize(mutation);
 
       if (resolvingTaskRef.current
-        && mutation?.actionType === ACTION_TYPE.RESOLVE_TASK
-        && mutation?.id) {
+        && mutation?.actionType === ACTION_TYPE.RESOLVE_TASK) {
         resolvingTaskRef.current = false;
-        history.push('/tasks');
+        history.replace('/AllTasks');
       }
     }
   }, [history, journalize, mutation, submittingMutation]);
