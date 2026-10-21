@@ -49,6 +49,7 @@ function TaskSearcher({
   const rowIdentifier = (task) => task.id;
 
   const isRowDisabled = (_, task) => task.status !== TASK_STATUS.ACCEPTED;
+  const canViewTasks = rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH);
 
   const headers = () => {
     const headers = [
@@ -59,7 +60,7 @@ function TaskSearcher({
       'task.dateCreated',
       'task.status',
     ];
-    if (rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH)) {
+    if (canViewTasks) {
       headers.push('emptyLabel');
     }
     return headers;
@@ -81,7 +82,7 @@ function TaskSearcher({
     (task) => task?.taskGroup?.code,
     (task) => formatDateTimeFromISO(task?.dateCreated),
     (task) => task.status,
-    (task) => (
+    ...(canViewTasks ? [(task) => (
       <Tooltip title={formatMessage('viewDetailsButton.tooltip')}>
         <IconButton
           onClick={() => openTask(task)}
@@ -89,7 +90,7 @@ function TaskSearcher({
           <VisibilityIcon />
         </IconButton>
       </Tooltip>
-    ),
+    )] : []),
   ];
 
   const defaultFilters = () => {
@@ -143,6 +144,10 @@ function TaskSearcher({
         tasksTotalCount,
       })}
       headers={headers}
+      columnWidths={[
+        '14%', '18%', '26%', '14%', '16%', undefined,
+        ...(canViewTasks ? ['48px'] : []),
+      ]}
       itemFormatters={itemFormatters}
       sorts={sorts}
       rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
