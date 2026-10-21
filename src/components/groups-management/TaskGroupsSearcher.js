@@ -84,13 +84,14 @@ function TaskGroupsSearcher({
   });
 
   const fetch = (params) => fetchTaskGroups(modulesManager, params);
+  const canManageTaskGroups = rights.includes(TASK_GROUP_UPDATE) || rights.includes(TASK_GROUP_DELETE);
 
   const headers = () => {
     const headers = [
       'taskGroup.code',
       'taskGroup.completionPolicy',
     ];
-    if (rights.includes(TASK_GROUP_UPDATE)) {
+    if (canManageTaskGroups) {
       headers.push('emptyLabel');
     }
     return headers;
@@ -109,26 +110,28 @@ function TaskGroupsSearcher({
       (taskGroup) => taskGroup.code,
       (taskGroup) => taskGroup.completionPolicy,
     ];
-    if (rights.includes(TASK_GROUP_UPDATE)) {
+    if (canManageTaskGroups) {
       formatters.push((taskGroup) => (
-        <Tooltip title={formatMessage('viewDetailsButton.tooltip')}>
-          <IconButton
-            onClick={() => openGroup(taskGroup)}
-          >
-            <VisibilityIcon />
-          </IconButton>
-        </Tooltip>
-      ));
-    }
-    if (rights.includes(TASK_GROUP_DELETE)) {
-      formatters.push((taskGroup) => (
-        <Tooltip title={formatMessage('deleteButton.tooltip')}>
-          <IconButton
-            onClick={() => onDelete(taskGroup)}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <span style={{ display: 'inline-flex', whiteSpace: 'nowrap' }}>
+          {rights.includes(TASK_GROUP_UPDATE) && (
+            <Tooltip title={formatMessage('viewDetailsButton.tooltip')}>
+              <IconButton
+                onClick={() => openGroup(taskGroup)}
+              >
+                <VisibilityIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+          {rights.includes(TASK_GROUP_DELETE) && (
+            <Tooltip title={formatMessage('deleteButton.tooltip')}>
+              <IconButton
+                onClick={() => onDelete(taskGroup)}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+        </span>
       ));
     }
     return formatters;
@@ -165,6 +168,7 @@ function TaskGroupsSearcher({
       errorItems={errorTaskGroups}
       tableTitle={formatMessageWithValues('taskGroup.searcherResultsTitle', { taskGroupsTotalCount })}
       headers={headers}
+      columnWidths={['35%', undefined, ...(canManageTaskGroups ? ['112px'] : [])]}
       itemFormatters={itemFormatters}
       sorts={sorts}
       rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}

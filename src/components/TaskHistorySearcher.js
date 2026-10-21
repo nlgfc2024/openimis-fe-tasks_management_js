@@ -7,16 +7,12 @@ import {
   useModulesManager,
   useTranslations,
 } from '@openimis/fe-core';
-import {
-  RIGHT_TASKS_MANAGEMENT_SEARCH, DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS, TASK_STATUS, TASK_ROUTE,
-} from '../constants';
+import { DEFAULT_PAGE_SIZE, ROWS_PER_PAGE_OPTIONS, TASK_STATUS, TASK_ROUTE } from '../constants';
 import { fetchTaskHistory } from '../actions';
 import trimBusinessEvent from '../utils/trimBusinessEvent';
 import TaskHistoryFilter from './TaskHistoryFilter';
 
-function TaskHistorySearcher({
-  rights, showFilters = true, taskId,
-}) {
+function TaskHistorySearcher({ showFilters = true, taskId }) {
   const history = useHistory();
   const modulesManager = useModulesManager();
   const dispatch = useDispatch();
@@ -57,9 +53,6 @@ function TaskHistorySearcher({
       'task.dateUpdated',
       'task.status',
     ];
-    if (rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH)) {
-      headers.push('emptyLabel');
-    }
     return headers;
   };
 
@@ -122,6 +115,7 @@ function TaskHistorySearcher({
         taskHistoryTotalCount,
       })}
       headers={headers}
+      columnWidths={['14%', '18%', '24%', '14%', '8%', '16%', undefined]}
       itemFormatters={itemFormatters}
       sorts={sorts}
       rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
