@@ -15,6 +15,7 @@ function TaskPreviewPanel({ rights, edited, setAdditionalData }) {
   const [header, setHeader] = useState(EMPTY_STRING);
   const [tableTaskHeaders, setTableTaskHeaders] = useState([]);
   const [taskItemFormatters, setTaskItemFormatters] = useState([]);
+  const [PreviewComponent, setPreviewComponent] = useState(null);
   const task = { ...edited };
 
   useEffect(() => {
@@ -23,10 +24,15 @@ function TaskPreviewPanel({ rights, edited, setAdditionalData }) {
         .find((c) => c.taskSource.includes(task.source));
 
       if (contrib) {
-        const { tableHeaders, itemFormatters, text } = contrib;
+        const {
+          tableHeaders, itemFormatters, text, previewComponent,
+        } = contrib;
         setHeader(text);
         setTableTaskHeaders(tableHeaders);
         setTaskItemFormatters(itemFormatters);
+        setPreviewComponent(() => previewComponent || null);
+      } else {
+        setPreviewComponent(null);
       }
     }
   }, [task.source]);
@@ -36,13 +42,17 @@ function TaskPreviewPanel({ rights, edited, setAdditionalData }) {
       <Typography className={classes.title}>
         {header}
       </Typography>
-      <TaskPreviewTable
-        rights={rights}
-        previewItem={task}
-        tableHeaders={tableTaskHeaders}
-        itemFormatters={taskItemFormatters}
-        setAdditionalData={setAdditionalData}
-      />
+      {PreviewComponent ? (
+        <PreviewComponent task={task} />
+      ) : (
+        <TaskPreviewTable
+          rights={rights}
+          previewItem={task}
+          tableHeaders={tableTaskHeaders}
+          itemFormatters={taskItemFormatters}
+          setAdditionalData={setAdditionalData}
+        />
+      )}
     </Paper>
   );
 }
