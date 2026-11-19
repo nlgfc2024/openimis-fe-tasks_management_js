@@ -49,7 +49,6 @@ function TaskApprovementPanel({
   const classes = useStyles();
   const { formatMessage } = useTranslations('tasksManagement', modulesManager);
   const prevSubmittingMutationRef = useRef();
-  const resolvingTaskRef = useRef(false);
   const [approveOrFail, setApproveOrFail] = useState(EMPTY_STRING);
   const [disable, setDisable] = useState(false);
   const task = { ...edited };
@@ -69,10 +68,7 @@ function TaskApprovementPanel({
     if (prevSubmittingMutationRef.current && !submittingMutation) {
       journalize(mutation);
 
-      if (resolvingTaskRef.current
-        && mutation?.actionType === ACTION_TYPE.RESOLVE_TASK
-        && mutation?.id) {
-        resolvingTaskRef.current = false;
+      if (mutation?.actionType === ACTION_TYPE.RESOLVE_TASK && mutation?.id) {
         history.replace(rights.includes(RIGHT_TASKS_MANAGEMENT_SEARCH_ALL) ? '/AllTasks' : '/tasks');
       }
     }
@@ -86,7 +82,6 @@ function TaskApprovementPanel({
     if (task?.id && user?.id) {
       if (confirmed) {
         setDisable(true);
-        resolvingTaskRef.current = true;
         resolveTask(
           task,
           formatMessage('task.resolve.mutationLabel'),
